@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>News Demo</title>
+  </head>
+  <body>
+    <div id="demo"></div>
+  </body>
+  <script src="jquery.min.js"></script>
+  <script src="pagination.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#demo").pagination({
+        dataSource: "http://127.0.0.1:8000/api/v0/items/hackernews/",
+        // locator: "items",
+        totalNumberLocator: function (response) {
+          // you can return totalNumber by analyzing response content
+        //   return Math.floor(Math.random() * (1000 - 100)) + 100;
+          reslen = response.length
+          return reslen
+        },
+        pageSize: 20,
+        ajax: {
+          beforeSend: function () {
+            dataContainer.html("Loading data from flickr.com ...");
+          },
+        },
+        callback: function (data, pagination) {
+          // template method of yourself
+          var html = template(data);
+          dataContainer.html(html);
+        },
+      });
+    });
+  </script>
+</html>
