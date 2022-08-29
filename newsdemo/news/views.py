@@ -1,19 +1,23 @@
 from django.shortcuts import render
 import json
 import requests
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
+from .serializers import NewsIdSerializer
+from .pagination import CustomPageNumberPagination
 from .models import DemoNewsModel
 
 # Create your views here.
 
-
-class NewsIdView(APIView):
+class NewsIdView(ListCreateAPIView):
     permission_classes = [AllowAny]
+    pagination_class = CustomPageNumberPagination
+    serializer_class = NewsIdSerializer
 
+    
 # get a list of all news ids from hacker news
     def get(self, request, format=None):
 
@@ -36,6 +40,8 @@ class NewsIdView(APIView):
 
 class NewsItemView(APIView):
     permission_classes = [AllowAny]
+    serializer_class = NewsIdSerializer
+    pagination_classes = CustomPageNumberPagination
 
     def get_data_from_API(self):
         """

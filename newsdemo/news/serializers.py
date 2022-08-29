@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import HackerNewsID
+from .models import DemoNewsModel
 
 
 class NewsIdSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = HackerNewsID
+        model = DemoNewsModel
         fields = ('hackernews',)
