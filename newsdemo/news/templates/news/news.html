@@ -4,8 +4,7 @@
     <h4 class="text-center">Latest News</h4>
     <hr />
     <table class="table table-hover table-striped border align-self-center w-75">
-      {% for news in news_list %} 
-      {{ news }}
+      {% for news in news %} 
       <tr>
         <td>
           <p>{{ news.by }} <small> {{ news.id }}</small></p>
@@ -13,7 +12,17 @@
       </tr>
       {% endfor %}
     </table>
-    {{ news }}
+    <hr/><br/>
+    {% for i in nums %}
+      <li class="page-item"><a class="page-link" href="?page={{ forloop.counter}}">{{ forloop.counter }}</a></li>
+    {% endfor %}
+    
+    {% if news.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ news.next_page_number}}">Next</a></li>
+      
+      <li class="page-item"><a class="page-link" href="?page={{ news.paginator.num_pages}}">{{ forloop.counter }}</a></li>
+      
+    {% endif %}
   </div>
 </div>
 {% endblock %}
