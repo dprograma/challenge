@@ -9,16 +9,18 @@ from rest_framework import status
 from .serializers import NewsIdSerializer
 from .pagination import CustomPageNumberPagination
 from .models import DemoNewsModel
+from django.core.paginator import Paginator
 
 # Create your views here.
 
+
 class NewsIdView(ListCreateAPIView):
     permission_classes = [AllowAny]
-    pagination_class = CustomPageNumberPagination
     serializer_class = NewsIdSerializer
 
-    
+
 # get a list of all news ids from hacker news
+
     def get(self, request, format=None):
 
         NEWS_URL = 'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty'
@@ -41,11 +43,10 @@ class NewsIdView(ListCreateAPIView):
 class NewsItemView(APIView):
     permission_classes = [AllowAny]
     serializer_class = NewsIdSerializer
-    pagination_classes = CustomPageNumberPagination
 
     def get_data_from_API(self):
         """
-            This helps to return 
+            This helps to return
             formatted data fetched from endpoint provided
             using request.
         """
@@ -77,6 +78,24 @@ class NewsItemView(APIView):
 
 # GET the latest hackernews streamed
 
-
     def get(self, request, format=None):
         return Response(self.get_data_from_API(), status=status.HTTP_201_CREATED)
+
+
+
+def newsItemView(request):
+    result = []
+    ids = DemoNewsModel.objects.all()
+    for id in ids:
+        NEWS_URL = f'https://hacker-news.firebaseio.com/v0/item/{str(id)}.json?print=pretty'
+        headers = {'user-agent': 'quickcheck/0.0.1'}
+        response = requests.get(NEWS_URL, headers=headers)
+        data = json.loads(response.text)
+        result.append(data)
+
+    # return result
+    p = Paginator(result, 10)
+    page = request.GET.get('page')
+    news = p.get_page(page)
+
+    return render(request, 'news/news.html', {'news': news, 'news_list':  ids})

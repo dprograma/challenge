@@ -1,0 +1,18 @@
+{% extends 'main.html' %} {% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center" style="height: 90vh;">
+    <h4 class="text-center">Latest News</h4>
+    <hr>
+    <table class="table table-hover table-striped border align-self-center">
+        {% for news in news_list %}
+            <tr>
+                <td>
+                    <a href="" class="list-group-item list-group-item action">{{ news.0.by }} <small> {{ news.0.id }}</small></a> 
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {{ news }}
+  </div>
+</div>
+{% endblock %}
