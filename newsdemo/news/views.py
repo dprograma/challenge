@@ -98,4 +98,4 @@ def newsItemView(request):
     page = request.GET.get('page')
     news = p.get_page(page)
 
-    return render(request, 'news/news.html', {'news': news, 'news_list':  ids})
+    return render(request, 'news/news.html', {'news': news, 'news_list':  result})
