@@ -6,6 +6,9 @@ class DemoNewsModel(models.Model):
     demonews = models.BigIntegerField(unique=True, primary_key=True)
     created_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-created_at']
+
     def save(self, *args, **kwargs):
         self.id = self.demonews # replacing the id(primary key) as the demonews id
         super(DemoNewsModel, self).save(*args, **kwargs)

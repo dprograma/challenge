@@ -7,7 +7,6 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from .serializers import NewsIdSerializer
-from .pagination import CustomPageNumberPagination
 from .models import DemoNewsModel
 from django.core.paginator import Paginator
 
