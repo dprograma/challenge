@@ -3,8 +3,10 @@
   <div class="row justify-content-center" style="height: 90vh">
     <h4 class="text-center">Latest News</h4>
     <hr />
-    <table class="table table-hover table-striped border align-self-center w-75">
-      {% for news in news %} 
+    <table
+      class="table table-hover table-striped border align-self-center w-75"
+    >
+      {% for news in news %}
       <tr>
         <td>
           <p>{{ news.by }} <small> {{ news.id }}</small></p>
@@ -12,17 +14,40 @@
       </tr>
       {% endfor %}
     </table>
-    <hr/><br/>
-    {% for i in nums %}
-      <li class="page-item"><a class="page-link" href="?page={{ forloop.counter}}">{{ forloop.counter }}</a></li>
-    {% endfor %}
-    
-    {% if news.has_next %}
-      <li class="page-item"><a class="page-link" href="?page={{ news.next_page_number}}">Next</a></li>
-      
-      <li class="page-item"><a class="page-link" href="?page={{ news.paginator.num_pages}}">{{ forloop.counter }}</a></li>
-      
-    {% endif %}
+    <hr />
+    <br />
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        {% if news.has_previous %}
+        <li class="page-item">
+          <a href="?page=1" class="page-link">&laquo; first</a>
+        </li>
+        <li class="page-item">
+          <a href="?page={{ news.previous_page_number }}" class="page-link"
+            >Previous</a
+          >
+        </li>
+        {% endif %} 
+        {% for i in nums %}
+        <li class="page-item">
+          <a href="?page={{ forloop.counter }}" class="page-link"
+            >{{ forloop.counter }}</a
+          >
+        </li>
+        {% endfor %} 
+        {% if news.has_next %}
+        <li class="page-item">
+          <a href="?page={{ news.next_page_number }}" class="page-link">Next</a>
+        </li>
+
+        <li class="page-item">
+          <a href="?page={{ news.paginator.num_pages }}" class="page-link"
+            >&raquo; Last</a
+          >
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
   </div>
 </div>
 {% endblock %}

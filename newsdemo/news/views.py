@@ -85,7 +85,7 @@ class NewsItemView(APIView):
 
 def newsItemView(request):
     result = []
-    ids = DemoNewsModel.objects.all()[:50]
+    ids = DemoNewsModel.objects.all()[:20]
     for id in ids:
         NEWS_URL = f'https://hacker-news.firebaseio.com/v0/item/{str(id)}.json?print=pretty'
         headers = {'user-agent': 'quickcheck/0.0.1'}
@@ -97,6 +97,6 @@ def newsItemView(request):
     p = Paginator(result, 5)
     page = request.GET.get('page')
     news = p.get_page(page)
-    nums= "1" * news.paginator.num_pages
+    nums = "1" * news.paginator.num_pages
 
-    return render(request, 'news/news.html', {'news': news, 'news_list':  result, "num": nums})
+    return render(request, 'news/news.html', {'news': news, 'news_list':  result, "nums": nums})
