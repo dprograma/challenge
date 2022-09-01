@@ -1,58 +1,86 @@
 {% extends 'main.html' %} {% block content %}
+<style>
+  p{
+    font-size: 12px;
+  }
+</style>
 <div class="container-fluid">
   <div class="row justify-content-center" style="height: 90vh">
     <div class="col">
-    <h4 style="text-align: center; margin-bottom: 10px;">Latest News</h4>
-    <hr />
-    <form action="{% url 'news' %}" class="d-flex" style="margin-left: 155px;">
-    <input class="form-control w-25 mb-3 " type="search" name="q" placeholder="Search for news" aria-label="Search">
-  </form>
-    <table
-      class="table mx-auto table-hover table-striped border align-self-center w-75"
-    >
+      <h4 style="text-align: center; margin-bottom: 10px">Latest News</h4>
+      <hr />
+      <form action="{% url 'news' %}" class="d-flex m-3">
+        <input
+          class="form-control w-25 mb-3"
+          type="search"
+          name="q"
+          placeholder="Search news by author"
+          aria-label="Search"
+        />
+      </form>
       {% for news in news %}
-      <tr>
-        <td>
-          <p>{{ news.by }} <small> {{ news.id }}</small></p>
-        </td>
-      </tr>
+      <div class="card m-3 bg-light">
+        <div class="card-body">
+          <h6
+            class="card-title text-left"
+            style="
+              text-transform: capitalize;
+              font-size: 12px;
+              font-weight: 600;
+            "
+          >
+            {{ news.title }}
+          </h6>
+          <p class="card-text text-justify" style="font-size: 12px">
+            {{ news.text|safe }}
+          </p>
+          <p class="text-justify" style="font-size: 12px">
+            <a href="{{ news.url }}">{{ news.url }}</a>
+          </p>
+          <p class="card-text text-right" style="font-size: 12px; text-transform: capitalize;">
+            Author: {{ news.name }}
+          </p>
+          <p class="card-text text-right" style="font-size: 12px">
+            {{ news.created_at|timesince }} ago
+          </p>
+        </div>
+      </div>
       {% endfor %}
-    </table>
-    <hr />
-    <br />
-    <nav aria-label="Page navigation example">
-      <ul class="pagination justify-content-center">
-        {% if news.has_previous %}
-        <li class="page-item">
-          <a href="?page=1" class="page-link">&laquo; first</a>
-        </li>
-        <li class="page-item">
-          <a href="?page={{ news.previous_page_number }}" class="page-link"
-            >Previous</a
-          >
-        </li>
-        {% endif %} 
-        {% for i in nums %}
-        <li class="page-item">
-          <a href="?page={{ forloop.counter }}" class="page-link"
-            >{{ forloop.counter }}</a
-          >
-        </li>
-        {% endfor %} 
-        {% if news.has_next %}
-        <li class="page-item">
-          <a href="?page={{ news.next_page_number }}" class="page-link">Next</a>
-        </li>
+      <hr />
+      <br />
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          {% if news.has_previous %}
+          <li class="page-item">
+            <a href="?page=1" class="page-link">&laquo; first</a>
+          </li>
+          <li class="page-item">
+            <a href="?page={{ news.previous_page_number }}" class="page-link"
+              >Previous</a
+            >
+          </li>
+          {% endif %} {% for i in nums %}
+          <li class="page-item">
+            <a href="?page={{ forloop.counter }}" class="page-link"
+              >{{ forloop.counter }}</a
+            >
+          </li>
+          {% endfor %} {% if news.has_next %}
+          <li class="page-item">
+            <a href="?page={{ news.next_page_number }}" class="page-link"
+              >Next</a
+            >
+          </li>
 
-        <li class="page-item">
-          <a href="?page={{ news.paginator.num_pages }}" class="page-link"
-            >&raquo; Last</a
-          >
-        </li>
-        {% endif %}
-      </ul>
-    </nav>
+          <li class="page-item">
+            <a href="?page={{ news.paginator.num_pages }}" class="page-link"
+              >&raquo; Last</a
+            >
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
   </div>
-</div>
 </div>
 {% endblock %}
