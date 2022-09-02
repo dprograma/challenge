@@ -12,7 +12,11 @@ from django.db.models import Q
 def get_data_from_API(request):
     news_list = DemoNewsModel.objects.all()
     if request.method == 'POST':
-        DemoNewsModel.objects.create(**request.data)
+        newspost, _ = DemoNewsModel.objects.get_or_create(**request.data)
+
+        for attr, value in request.data.items():
+            setattr(newspost, attr, value)
+        newspost.save()
         return Response({"Record inserted successfully.": request.data})
     serialized = NewsIdSerializer(news_list, many=True)
     return Response(serialized.data)
@@ -20,11 +24,11 @@ def get_data_from_API(request):
 
 def newsItemView(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    print("q is: ", q)
-    news_list = DemoNewsModel.objects.filter(Q(name__icontains=q))
-    print("News query is: ", news_list.query)
-    print("Query set: ", news_list)
-    p = Paginator(DemoNewsModel.objects.filter(Q(name__icontains=q)), 5)
+    # print("q is: ", q)
+    news_list = DemoNewsModel.objects.filter(Q(name__icontains=q))[:20]
+    # print("News query is: ", news_list.query)
+    # print("Query set: ", news_list)
+    p = Paginator(DemoNewsModel.objects.filter(Q(name__icontains=q))[:20], 5)
     page = request.GET.get('page')
     news = p.get_page(page)
     nums = "1" * news.paginator.num_pages

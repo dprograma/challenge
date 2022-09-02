@@ -19,7 +19,7 @@ def job():
 
     news = 400  # 100 downward/latest
     res = [int(id.strip())
-            for id in result[news+1:news+6]]  # list comprehension
+            for id in result[news+1:]]  # list comprehension
     
     resp = []
     for id in res:
